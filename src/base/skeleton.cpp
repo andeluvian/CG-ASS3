@@ -300,7 +300,13 @@ void Skeleton::updateToWorldTransforms() {
 void Skeleton::updateToWorldTransforms(unsigned joint_index, const Mat4f& parent_to_world) {
 	// YOUR CODE HERE (R1)
 	// Update transforms for joint at joint_index and its children.
+	joints_[joint_index].to_world = parent_to_world * joints_[joint_index].to_parent;
+
+	for (int i = 0; i < joints_[joint_index].children.size(); i++) {
+		updateToWorldTransforms(joints_[joint_index].children[i], joints_[joint_index].to_world);
+	}
 }
+
 
 void Skeleton::computeToBindTransforms() {
 	updateToWorldTransforms();
